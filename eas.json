@@ -1,0 +1,25 @@
+{
+  "builds": {
+    "android": {
+      "release": {
+        "workflow": "generic"
+      },
+      "development": {
+        "workflow": "generic",
+        "gradleCommand": ":app:assembleDebug",
+        "distribution": "internal"
+      }
+    },
+    "ios": {
+      "preview": {
+        "distribution": "internal",
+        "workflow": "managed"
+      },
+      "preview-enterprise" : {
+        "distribution": "internal",
+        "enterpriseProvisioning": "universal",
+        "workflow": "generic"
+      }
+    }
+  }
+}

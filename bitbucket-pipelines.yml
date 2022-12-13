@@ -1,0 +1,48 @@
+# variables:
+#   SONAR_TOKEN: '<string>'  # Optional
+#   EXTRA_ARGS: '<string>'  # Optional
+#   SONAR_SCANNER_OPTS: '<string>'  # Optional
+#   DEBUG: '<boolean>'  # Optional
+
+image: node:10.15.0
+
+clone:
+  depth: full  # SonarCloud scanner needs the full history to assign issues properly
+
+definitions:
+
+  services:
+    docker:
+      memory:  2048 #[7128, 4096, 2048] MB
+
+  caches:
+    sonar: ~/.sonar/cache  # Caching SonarCloud artifacts will speed up your build
+
+  steps:
+    - step: &build-test-sonarcloud
+        name: Build, test and analyze on SonarCloud
+        size: 2x # Double resources available for this step.
+        caches:
+          - sonar
+        script:
+          - pipe: sonarsource/sonarcloud-scan:1.2.0
+    - step: &check-quality-gate-sonarcloud
+        name: Check the Quality Gate on SonarCloud
+        size: 2x # Double resources available for this step.
+        script:
+          - pipe: sonarsource/sonarcloud-quality-gate:0.1.4
+
+pipelines:
+
+  branches:
+    development:
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud
+    master:
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud
+
+  pull-requests:
+    '**':
+      - step: *build-test-sonarcloud
+      - step: *check-quality-gate-sonarcloud

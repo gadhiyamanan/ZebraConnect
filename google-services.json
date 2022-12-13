@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1045738617184",
+    "project_id": "zebra-connect-2d592",
+    "storage_bucket": "zebra-connect-2d592.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045738617184:android:180d7f58a1aeb97c0b4605",
+        "android_client_info": {
+          "package_name": "com.zebrastaffing.connect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045738617184-bqeou0tfn9a9s94l4ml5vdvmfdo9s75b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRdMI2c0veFNsfGE8MtnbGqArafzDW8oE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045738617184-bqeou0tfn9a9s94l4ml5vdvmfdo9s75b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045738617184:android:a3ab53a6eeaeff750b4605",
+        "android_client_info": {
+          "package_name": "com.zebrastaffing.connectapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045738617184-bqeou0tfn9a9s94l4ml5vdvmfdo9s75b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRdMI2c0veFNsfGE8MtnbGqArafzDW8oE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045738617184-bqeou0tfn9a9s94l4ml5vdvmfdo9s75b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
