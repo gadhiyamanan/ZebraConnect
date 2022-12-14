@@ -9,31 +9,33 @@ import { useTheme } from "react-native-paper";
 export default function ExceptionReportModal({
     onRequestClose,
     isVisible,
-    data
+    data = {}
 }) {
     const theme = useTheme();
     const colors = theme.colors;
     const Data = [
-        { title: "#", value: "25%" },
-        { title: "Work Area", value: "30%" },
-        { title: "Shift", value: "35%" },
-        { title: "Type Of Exception", value: 150 },
-        { title: "Work Review", value: 70 },
-        { title: "Remarks", value: 90 },
-        { title: "Supervisor", value: 90 },
-        { title: "Status", value: 80 }
+        { title: "Exception Type", value: "type_of_exception_hour" },
+        { title: "Shift", value: "shift" },
+        { title: "Work Area", value: "workarea" },
+        { title: "Supervisor", value: "supervisor_name" },
+        { title: "Remark", value: "remark" },
+        { title: "Responser", value: "responser" },
+        { title: "Status", value: "status" },
+        { title: "Approver Remark", value: "approver_remark" },
     ]
-    const listRenderItem = ({ item }) => (
-        <View style={[styles.flexRow]}>
-            <View style={styles.itemTitle}>
-                <Text style={styles.itemText}> {item.title}</Text>
-            </View>
-            <View style={styles.itemTitle}>
-                <Text style={styles.itemText}> {item.value}</Text>
-            </View>
+    const listRenderItem = ({ item }) => 
+        data? (
+            <View style={[styles.flexRow]}>
+                <View style={styles.itemTitle}>
+                    <Text style={styles.itemText}>{item.title}</Text>
+                </View>
+                <View style={styles.itemTitle}>
+                    <Text style={styles.itemText}>{data[item.value]}</Text>
+                </View>
 
-        </View>
-    )
+            </View>
+        ):<></>
+    
     const listHeaderComponent = ({ item }) => (
         <TouchableOpacity style={{ alignSelf: "flex-end", marginBottom: 15 }} onPress={onRequestClose}>
             <Entypo
@@ -56,7 +58,7 @@ export default function ExceptionReportModal({
                 <FlatList
                     bounces={false}
 
-                    data={Data}
+                    data={Data || []}
                     ListHeaderComponent={listHeaderComponent}
                     key={(__, index) => String(index)}
                     showsHorizontalScrollIndicator={false}

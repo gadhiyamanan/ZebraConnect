@@ -3,12 +3,12 @@ import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { Platform, Dimensions } from "react-native";
 
-export function caluclateDateHours(fromDate, toDate) {
+export function caluclateDateHours(fromDate, toDate,hoursInDay) {
   var date1 = new Date(fromDate);
   var date2 = new Date(toDate);
   const diffInDays = Moment(date2).diff(Moment(date1), "days");
   const days = parseInt(diffInDays) + 1;
-  const thrs = days * 8;
+  const thrs = days *hoursInDay;
   const minutes1 = thrs * 60;
   var hours = Math.floor(minutes1 / 60);
   var minutes = minutes1 % 60;

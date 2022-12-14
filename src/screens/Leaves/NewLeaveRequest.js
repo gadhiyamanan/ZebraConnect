@@ -24,6 +24,7 @@ import { caluclateDateHours } from "../../util/util";
 import CustomInput from "../../components/CustomInput/CustomInput";
 import { styles } from "./styles/NewLeavesStyles";
 import { LOADER_COLOR } from "../../util/constants/Constants";
+import moment from "moment";
 export default class NewLeaveRequest extends Component {
   constructor(props) {
     super(props);
@@ -53,6 +54,7 @@ export default class NewLeaveRequest extends Component {
       ltypeLabel: "",
       isHoursEditable: false,
       devlopmentHours: 0,
+      hoursPerDay:0
     };
     this.controller = null;
   }
@@ -71,9 +73,10 @@ export default class NewLeaveRequest extends Component {
     this.setState({ isLoading: true });
     const formData = new URLSearchParams();
     formData.append("emp_id", user.emp_id);
+   
+    const hoursPerDayResult = await http.get(apiHelper.getEmpLeaveHoursPerDay + `/` + user.emp_id);
     const result = await http.get(apiHelper.getLeaveType + `/` + user.emp_id);
     const allData = result.data;
-
     let secondaryReason = allData.sicknessReason.filter(x => {
       return x.label !== SICKNESS_TYPE.COVID_19;
     });
@@ -85,6 +88,7 @@ export default class NewLeaveRequest extends Component {
       parentingReasonData: allData.parentingReason,
       covidReasonData: allData.covidReasons,
       isLoading: false,
+      hoursPerDay:hoursPerDayResult?.data?.leave_hours_per_day||0
     });
   }
 
@@ -164,17 +168,25 @@ export default class NewLeaveRequest extends Component {
       return false;
     }
 
-    if (ltype === "3") {
+    if (
+      ltype === "3" &&
+      +new Date(moment().add(30, "day")) >= +new Date(moment(fromDate))
+    ) {
       Alert.alert(
         "",
         "Minimum notice period for Study Leave is not met. Do you still wish to apply?",
         [
           {
             text: "Yes",
-            onPress: this.onSubmitApi,
+            onPress: () => {
+              this.onSubmitApi();
+            },
           },
           {
-            text: "N0",
+            text: "No",
+            onPress: () => {
+              this.setState({ fromDate: "" });
+            },
           },
         ],
         { cancelable: false }
@@ -305,7 +317,8 @@ export default class NewLeaveRequest extends Component {
     if (this.state.fromDate && this.state.toDate) {
       let day_hours = caluclateDateHours(
         this.state.fromDate,
-        this.state.toDate
+        this.state.toDate,
+        this.state.hoursPerDay
       );
       this.setState(
         {
@@ -411,11 +424,13 @@ export default class NewLeaveRequest extends Component {
             )}
             <View style={styles.datePickerContainer}>
               <DatePicker
+                minDate={new Date()}
                 placeholder="From Date"
                 date={fromDate}
                 onDateChange={this.setFromDate}
               />
               <DatePicker
+                minDate={new Date()}
                 placeholder="To Date"
                 date={toDate}
                 onDateChange={this.setToDate}

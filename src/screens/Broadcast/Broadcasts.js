@@ -6,7 +6,6 @@ import {
   ActivityIndicator,
   Text,
 } from "react-native";
-
 import auth from "../../services/authService";
 import http from "../../services/httpService";
 import apiHelper from "../apiHelper";

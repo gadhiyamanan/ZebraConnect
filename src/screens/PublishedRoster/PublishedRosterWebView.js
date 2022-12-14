@@ -28,13 +28,11 @@ class PublishedRosterWebView extends Component {
           apiHelper.webViewRoster + user.emp_id,
       });
       this.redirectUser(user);
-      console.log(AsyncStorage.getItem("webUrl"));
       AsyncStorage.getItem("webUrl").then(webUrl => {
       if (webUrl) {
         this.setState({ baseurl: webUrl +  apiHelper.webViewRoster + user.emp_id });
       }
       });
-      console.log(this.state.baseurl);
     });
   }
   ActivityIndicatorElement = () => {

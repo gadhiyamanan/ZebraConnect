@@ -22,9 +22,20 @@ export const styles = StyleSheet.create({
     buttonContainerStyle: {
         flexDirection: 'row-reverse'
     },
-    scrollContainer: { marginHorizontal: 5, marginBottom: 25 },
-    scrollStyle: { marginTop: 15 },
-    itemContainer: { borderWidth: 0.5, borderColor: "gray", alignItems: "center", paddingVertical: 5 },
+    scrollContainer: { marginHorizontal: 5 },
+    mt15:{marginTop:15},
+    itemContainer: { borderWidth: 0.5, borderColor: "lightgray", paddingVertical: 5, paddingHorizontal: 3 },
+    itemHeaderContainer: { borderWidth: 0.5, borderColor: "lightgray",paddingHorizontal: 3 , paddingVertical: 5, backgroundColor: "lightgray" },
     flexRow: { flexDirection: 'row' },
-    itemText: { fontSize: 14 }
+    itemText: { fontSize: 14, },
+    activityIndicator: {
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1
+    },
+    hyperLink: {
+        color: "blue",
+        textDecorationLine: "underline",
+    },
+    mv10: { marginVertical: 10 }
 });

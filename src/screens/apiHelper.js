@@ -1,4 +1,4 @@
-const apiHelper = 
+const apiHelper =
 {
   appApi: `/Suggestions/`,
   employeeLogin: `/Auth/login`,
@@ -35,6 +35,13 @@ const apiHelper =
   locationDetail: `/Roster/getLocationList`,
   getTrustCode: `https://ei1voordq8.execute-api.eu-west-2.amazonaws.com/prod/trust`,
   webViewRoster: `/employee-published-rota-app/`,
+  exceptionList: `/ExceptionReport/getExceptionList`,
+  getExceptionPlannerList: `/ExceptionReport/getExceptionPlannerList`,
+  getExceptionSupervisorList: `/ExceptionReport/getExceptionSupervisorList`,
+  getExceptionShiftDate: `/ExceptionReport/getExceptionShiftDate`,
+  getExceptionLocationWorkarea: `/ExceptionReport/getExceptionLocationWorkarea`,
+  addNewException: `/ExceptionReport/addNewException`,
+  getEmpLeaveHoursPerDay : `Leave/getEmpLeaveHoursPerDay`
 };
 
 export default apiHelper;

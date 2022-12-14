@@ -376,7 +376,7 @@ class DatePicker extends Component {
             isVisible={mode === "time" && this.state.isPicker}
             mode="time"
             display="spinner"
-            date={this.state.date}
+            date={new Date(this.state.date)}
             onConfirm={this.onTimePicked}
             onCancel={()=>this.setState({isPicker: false})}
           />
@@ -385,7 +385,7 @@ class DatePicker extends Component {
             mode="date"
             minimumDate={minDate && this.getDate(minDate)}
             maximumDate={maxDate && this.getDate(maxDate)}
-            date={this.state.date}
+            date={new Date(this.state.date)}
             onConfirm={this.onDatePicked}
             onCancel={()=>this.setState({isPicker: false})}
           />

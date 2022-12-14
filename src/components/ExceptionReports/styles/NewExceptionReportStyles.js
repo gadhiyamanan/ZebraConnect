@@ -5,7 +5,10 @@ export const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 10,
         backgroundColor: "white",
-        paddingBottom: 15
+        // paddingBottom: 25
+    },
+    scrollContainer: {
+        paddingBottom: 25
     },
     checkBoxContainer: { backgroundColor: "white", borderWidth: 0 },
     input: {

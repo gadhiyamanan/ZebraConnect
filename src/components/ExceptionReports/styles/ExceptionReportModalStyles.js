@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 5,
     },
-    itemText: { paddingVertical: 3, fontSize: 15 },
+    itemText: { paddingVertical: 3, fontSize: 15,textAlign:"left",paddingHorizontal:3 },
     flexRow: { flexDirection: "row" },
-    itemTitle: { width: "50%", borderWidth: 1, borderColor: "black", }
+    itemTitle: { width: "50%", borderWidth: 0.5, borderColor: "black", paddingLeft: 2}
 });
