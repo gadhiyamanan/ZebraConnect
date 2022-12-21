@@ -194,7 +194,7 @@ Shift Time : ${Moment(date).format(
           subTitle: row?.leave_type,
           message:
             "Date : " +
-            Moment(row.shift_from_time).format(DATE_FORMATS.BASIC_DATE_FORMAT),
+            Moment(row.leave_date).format(DATE_FORMATS.BASIC_DATE_FORMAT),
         });
       });
     }
