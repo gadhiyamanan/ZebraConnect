@@ -2,10 +2,10 @@ import React from 'react'
 import { TextInput } from 'react-native';
 import { styles } from './CustomInputStyles';
 
-export default function CustomInput({placeholder, value, isEditable, onChangeText, inModal=false, keyboardType="default"}) {
+export default function CustomInput({placeholder, value, isEditable,multiline=true, onChangeText, inModal=false, keyboardType="default"}) {
     return (
       <TextInput
-        style={inModal ? styles.modalRemarkInput : styles.input}
+        style={inModal ? styles.modalRemarkInput : [styles.input,!multiline&&{height:40}]}
         underlineColorAndroid="transparent"
         placeholder={placeholder}
         placeholderTextColor={"#9E9E9E"}
@@ -13,7 +13,7 @@ export default function CustomInput({placeholder, value, isEditable, onChangeTex
         editable={isEditable}
         onChangeText={isEditable ? onChangeText : undefined}
         numberOfLines={isEditable ? 4 : undefined}
-        multiline={isEditable ? true : undefined}
+        multiline={isEditable ? true : multiline}
         keyboardType={keyboardType}
       />
     );

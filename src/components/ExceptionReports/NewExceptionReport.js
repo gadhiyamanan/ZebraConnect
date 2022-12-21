@@ -222,7 +222,7 @@ class NewExceptionReport extends Component {
                         <DropDown
                             items={plannerDropDownData}
                             onChangeItem={(value) => {
-                                this.setState({ planner: value.value }, () =>
+                                this.setState({ planner: value.value,date:null,workArea:null }, () =>
                                     this.getExceptionLocationWorkArea()
                                 )
                                 this.getExceptionShiftDate(value.value)
@@ -234,20 +234,21 @@ class NewExceptionReport extends Component {
                         <DropDown
                             items={shiftDateDropDownData}
                             onChangeItem={(value) => {
-                                this.setState({ date: value.value }, () =>
+                                this.setState({ date: value.value ,workArea:null}, () =>
                                     this.getExceptionLocationWorkArea()
                                 )
                             }}
+                            defaultValue={date}
                             placeholder="Select Date"
                             value={date}
                             zIndex={3000}
                         />
                         {exceptionType === "Worked Extra Hours" && (
                             <CustomInput
+                                multiline={false} 
                                 keyboardType="decimal-pad"
                                 placeholder={"Hours(e.g 2.50 = 2 hours 30 minutes )"}
                                 value={extraWorkHour}
-                                isEditable
                                 onChangeText={(value) => this.setState({ extraWorkHour: value })}
                             />
                         )}
@@ -258,6 +259,7 @@ class NewExceptionReport extends Component {
                                 this.setState({ workArea: value.value })
                             }}
                             placeholder="Select Work Area"
+                            defaultValue={workArea}
                             value={workArea}
                             zIndex={2000}
                         />
@@ -271,10 +273,9 @@ class NewExceptionReport extends Component {
                             zIndex={1000}
                         />
                         <CustomInput
-                            multiple
+                             multiline={false} 
                             placeholder={"Consultant in charge"}
                             value={consultantInCharge}
-                            isEditable
                             onChangeText={(value) =>
                                 this.setState({ consultantInCharge: value })
                             }

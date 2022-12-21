@@ -19,7 +19,6 @@ export default function ExceptionReportModal({
         { title: "Work Area", value: "workarea" },
         { title: "Supervisor", value: "supervisor_name" },
         { title: "Remark", value: "remark" },
-        { title: "Responser", value: "responser" },
         { title: "Status", value: "status" },
         { title: "Approver Remark", value: "approver_remark" },
     ]

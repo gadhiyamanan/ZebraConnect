@@ -10,7 +10,8 @@ export default function DropDown({
   onChangeItem,
   controller,
   onOpen,
-  onClose
+  onClose,
+  defaultValue=null
 }) {
   return (
     <DropDownPicker
@@ -24,6 +25,7 @@ export default function DropDown({
       selectedValue={value}
       onChangeItem={onChangeItem}
       controller={controller}
+      defaultValue={defaultValue}
     />
   );
 }

@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-import Moment from "moment";
+import React, { Component, Fragment } from "react"
+import Moment from "moment"
 import {
   Text,
   View,
@@ -11,34 +11,34 @@ import {
   ScrollView,
   Modal,
   StatusBar,
-  Platform,
-} from "react-native";
-import { Card } from "react-native-elements";
-import { FontAwesome } from "@expo/vector-icons";
+  Platform
+} from "react-native"
+import { Card } from "react-native-elements"
+import { FontAwesome } from "@expo/vector-icons"
 
-import { WebView } from "react-native-webview";
-import auth from "../../services/authService";
-import http from "../../services/httpService";
-import apiHelper from "../apiHelper";
-import { SCREENS } from "../../util/constants/Constants";
-import { styles } from "./PublishRoasterStyles";
-import DropDown from "../../components/DropDown/DropDown";
-import ShortLeaveModal from "../../components/Modal/ShortLeaveApplyModal";
-import { withTheme, Button } from "react-native-paper";
-import DocViewer from "../../components/DocViewer/DocViewer";
-import { LOADER_COLOR } from "../../util/constants/Constants";
-import Constants from "expo-constants";
-import * as FileSystem from "expo-file-system";
+import { WebView } from "react-native-webview"
+import auth from "../../services/authService"
+import http from "../../services/httpService"
+import apiHelper from "../apiHelper"
+import { SCREENS } from "../../util/constants/Constants"
+import { styles } from "./PublishRoasterStyles"
+import DropDown from "../../components/DropDown/DropDown"
+import ShortLeaveModal from "../../components/Modal/ShortLeaveApplyModal"
+import { withTheme, Button } from "react-native-paper"
+import DocViewer from "../../components/DocViewer/DocViewer"
+import { LOADER_COLOR } from "../../util/constants/Constants"
+import Constants from "expo-constants"
+import * as FileSystem from "expo-file-system"
 
 class PublishedRoster extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       isLoading: false,
       isPrintLoading: false,
       MyViewFilter: [
         { label: "My view", value: "0" },
-        { label: "Team view", value: "1" },
+        { label: "Team view", value: "1" }
       ],
       shift: [],
       rosterperiod: [],
@@ -61,63 +61,72 @@ class PublishedRoster extends Component {
       locationid: "",
       locationPickerValue: "",
       isSearch: false,
-      isDropdownOpen: false,
-    };
+      isDropdownOpen: false
+    }
   }
 
   redirectUser(user) {
     if (user.emp_id === "" || user.emp_id === null) {
-      this.props.navigation.navigate(SCREENS.LOGIN);
+      this.props.navigation.navigate(SCREENS.LOGIN)
     }
   }
 
   componentDidMount() {
-    auth.getCurrentUser().then(user => {
-      this.setState({ loggedInUser: user });
-      this.redirectUser(user);
-      this.selectRosterPeriod(user);
-      this.selectPublishRoster();
-      this.selectLocationData(user);
-    });
-    this.selectShiftData();
+    auth.getCurrentUser().then((user) => {
+      this.setState({ loggedInUser: user })
+      this.redirectUser(user)
+      this.selectRosterPeriod(user)
+      this.selectPublishRoster()
+      this.selectLocationData(user)
+    })
+    this.selectShiftData()
   }
 
   ///Get Employees My Say Data and set in this.state.mySayList
   async selectShiftData() {
-    const result = await http.get(apiHelper.rosterFilterShift);
-    this.setState({ shift: result.data });
+    const result = await http.get(apiHelper.rosterFilterShift)
+    this.setState({ shift: result.data })
   }
   async selectLocationData(user) {
-    const result = await http.get(apiHelper.locationDetail + `/` + user.emp_id);
-    this.setState({ locations: result.data });
+    const result = await http.get(apiHelper.locationDetail + `/` + user.emp_id)
+    this.setState({ locations: result.data })
   }
 
   async selectRosterPeriod(user) {
     const result = await http.get(
       apiHelper.rosterFilterPeriod + `/` + user.emp_id
-    );
-
-    this.setState({ rosterperiod: result.data });
+    )
+    const selectedValue = result?.data?.find((data) => data?.selected)
+      ? result?.data?.find((data) => data?.selected)
+      : result?.data?.length
+      ? result?.data[result?.data?.length - 1]
+      : null
+    this.setState({ rosterperiod: result.data }, () =>
+      this.setState({
+        periodPickerValue: selectedValue?.value,
+        dates: selectedValue.label
+      })
+    )
   }
 
   selectPublishRoster = async () => {
-    this.setState({ isLoading: true, isSearch: true });
+    this.setState({ isLoading: true, isSearch: true })
 
-    const formData = new URLSearchParams();
-    formData.append("emp_id", this.state.loggedInUser.emp_id);
-    formData.append("team_view", this.state.teamview);
-    formData.append("roster_period", this.state.dates);
-    formData.append("shift", this.state.shiftid);
-    formData.append("location_filter", this.state.locationid);
+    const formData = new URLSearchParams()
+    formData.append("emp_id", this.state.loggedInUser.emp_id)
+    formData.append("team_view", this.state.teamview)
+    formData.append("roster_period", this.state.dates)
+    formData.append("shift", this.state.shiftid)
+    formData.append("location_filter", this.state.locationid)
 
-    const result = await http.post(apiHelper.publishedRoster, formData);
+    const result = await http.post(apiHelper.publishedRoster, formData)
     if (result.data && result.data.length <= 0) {
       this.setState({
-        noDataFound: true,
-      });
+        noDataFound: true
+      })
     }
-    this.setState({ ShiftDetail: result.data, isLoading: false });
-  };
+    this.setState({ ShiftDetail: result.data, isLoading: false })
+  }
 
   checkifAssigned(data) {
     if (data.workarea !== "") {
@@ -125,38 +134,38 @@ class PublishedRoster extends Component {
         <Text style={styles.textField}>
           {data.workarea}/{data.location}
         </Text>
-      );
+      )
     }
     if (data.location !== "") {
-      return <Text style={styles.textField}>{data.location}</Text>;
+      return <Text style={styles.textField}>{data.location}</Text>
     }
   }
 
-  toggleShiftModal = shift => {
-    const { showModal } = this.state;
+  toggleShiftModal = (shift) => {
+    const { showModal } = this.state
     this.setState({
       currentSelectedShift: shift,
-      showModal: !showModal,
-    });
-  };
+      showModal: !showModal
+    })
+  }
 
   checkifShift(data) {
     if (data.shift !== "") {
       let shortLeaveStyle =
         data.short_leave == 0
           ? styles.shortLeaveRowNegative
-          : styles.shortLeaveRowPositive;
-      let shiftColor = data.shift_color == "" ? "#DEFDE0" : data.shift_color;
-      var today = new Date();
+          : styles.shortLeaveRowPositive
+      let shiftColor = data.shift_color == "" ? "#DEFDE0" : data.shift_color
+      var today = new Date()
       var currdate =
         today.getFullYear() +
         "-" +
         (today.getMonth() + 1) +
         "-" +
-        today.getDate();
-      var shiftdate = Moment(data.from_date).format("YYYY-MM-DD");
-      var date1 = +new Date();
-      var date2 = new Date(shiftdate);
+        today.getDate()
+      var shiftdate = Moment(data.from_date).format("YYYY-MM-DD")
+      var date1 = +new Date()
+      var date2 = new Date(shiftdate)
       return (
         <React.Fragment>
           <TouchableOpacity
@@ -165,7 +174,7 @@ class PublishedRoster extends Component {
                 data.emp_id === this.state.loggedInUser.emp_id &&
                 date1 <= date2
               ) {
-                this.toggleShiftModal(data);
+                this.toggleShiftModal(data)
               }
             }}
             disabled={data.short_leave == -1 ? false : true}
@@ -197,7 +206,7 @@ class PublishedRoster extends Component {
             </View>
           ) : null}
         </React.Fragment>
-      );
+      )
     }
   }
 
@@ -206,13 +215,13 @@ class PublishedRoster extends Component {
       let shortLeaveStyle =
         data.short_leave == 0
           ? styles.shortLeaveRowNegative
-          : styles.shortLeaveRowPositive;
+          : styles.shortLeaveRowPositive
       return (
         <React.Fragment>
           <TouchableOpacity
             onPress={() => {
               if (data.emp_id === this.state.loggedInUser.emp_id) {
-                this.toggleShiftModal(data);
+                this.toggleShiftModal(data)
               }
             }}
             disabled={data.short_leave == -1 ? false : true}
@@ -246,85 +255,85 @@ class PublishedRoster extends Component {
             </View>
           ) : null}
         </React.Fragment>
-      );
+      )
     }
   }
   nameSplit(empName) {
     if (empName !== "") {
-      const splitName = empName.split("~");
+      const splitName = empName.split("~")
 
-      return splitName[0] + " ( " + splitName[3] + " )";
+      return splitName[0] + " ( " + splitName[3] + " )"
     }
   }
 
   nameSplitAll(empName) {
     if (empName !== "") {
-      const splitName = empName.split(",");
+      const splitName = empName.split(",")
       const nameAll = splitName.map((name, index) => (
         <Text key={String(index)}>
           {this.nameSplit(name)}
           {"\n"}
         </Text>
-      ));
-      return nameAll;
+      ))
+      return nameAll
     }
   }
 
   empPopUp(empName) {
-    var splitName = "~ ~ ~";
+    var splitName = "~ ~ ~"
     if (empName !== "") {
-      splitName = empName.split("~");
+      splitName = empName.split("~")
     }
-    var r = splitName[0];
+    var r = splitName[0]
     Alert.alert(
       r,
       `Email: ${splitName[1]}`,
       [
         {
           text: "Ok",
-          style: "cancel",
-        },
+          style: "cancel"
+        }
       ],
       { cancelable: false }
-    );
+    )
   }
 
-  rosterPeriodData = value => {
-    this.setState({ dates: value.label });
-    this.setState({ periodPickerValue: value.value });
-  };
+  rosterPeriodData = (value) => {
+    this.setState({ dates: value.label })
+    this.setState({ periodPickerValue: value.value })
+  }
 
-  rosterShiftData = value => {
-    this.setState({ shiftid: value.value });
-    this.setState({ shiftPickerValue: value.value });
-  };
-  selectedLocation = value => {
-    this.setState({ locationid: value.value });
-    this.setState({ locationPickerValue: value.value });
-  };
+  rosterShiftData = (value) => {
+    this.setState({ shiftid: value.value })
+    this.setState({ shiftPickerValue: value.value })
+  }
+  selectedLocation = (value) => {
+    this.setState({ locationid: value.value })
+    this.setState({ locationPickerValue: value.value })
+  }
 
-  myViewTeam = value => {
-    this.setState({ isSearch: false, teamview: value.value });
-    this.setState({ myTeamPickerValue: value.value });
-  };
+  myViewTeam = (value) => {
+    this.setState({ isSearch: false, teamview: value.value })
+    this.setState({ myTeamPickerValue: value.value })
+  }
 
   checkDate(data, previousdate) {
-    let employeeFrom = data.employee_from == 2 ? "(Bank Assignment)" : "";
+    let employeeFrom = data.employee_from == 2 ? "(Bank Assignment)" : ""
     if (data.from_date != previousdate)
-      return `${data.from_date} ${employeeFrom}`;
+      return `${data.from_date} ${employeeFrom}`
   }
 
   getShiftDetail = () => {
-    const { ShiftDetail, noDataFound } = this.state;
-    let previousdate = "";
+    const { ShiftDetail, noDataFound } = this.state
+    let previousdate = ""
     if (ShiftDetail && ShiftDetail.length > 0) {
       return ShiftDetail.map((data, index) => {
-        const dataIndex = index - 1;
+        const dataIndex = index - 1
         index <= 0
           ? ""
           : ShiftDetail[dataIndex] != ""
           ? (previousdate = ShiftDetail[dataIndex].from_date)
-          : "";
+          : ""
         return (
           <View key={String(index)} style={styles.shiftDetailsContainer}>
             <Text style={styles.dateText}>
@@ -334,7 +343,7 @@ class PublishedRoster extends Component {
             {this.checkifShift(data)}
             <TouchableHighlight
               onPress={() => {
-                this.empPopUp(data.emp_name);
+                this.empPopUp(data.emp_name)
               }}
             >
               <Text style={styles.textField1}>
@@ -342,25 +351,25 @@ class PublishedRoster extends Component {
               </Text>
             </TouchableHighlight>
           </View>
-        );
-      });
+        )
+      })
     } else if (noDataFound) {
-      return <Text style={styles.noData}>No data found</Text>;
+      return <Text style={styles.noData}>No data found</Text>
     }
-    return null;
-  };
+    return null
+  }
 
   getShiftDetailTeamView = () => {
-    const { ShiftDetail, noDataFound } = this.state;
-    let previousdate = "";
+    const { ShiftDetail, noDataFound } = this.state
+    let previousdate = ""
     if (ShiftDetail && ShiftDetail.length > 0) {
       return ShiftDetail.map((data, index) => {
-        const dataIndex = index - 1;
+        const dataIndex = index - 1
         index <= 0
           ? ""
           : ShiftDetail[dataIndex] != ""
           ? (previousdate = ShiftDetail[dataIndex].from_date)
-          : "";
+          : ""
         return (
           <React.Fragment key={String(index)}>
             <Text style={styles.dateText}>
@@ -369,16 +378,16 @@ class PublishedRoster extends Component {
             {this.checkifAssigned(data)}
             {this.checkifShiftTeamView(data)}
           </React.Fragment>
-        );
-      });
+        )
+      })
     } else if (noDataFound) {
-      return <Text style={styles.noData}>No data found</Text>;
+      return <Text style={styles.noData}>No data found</Text>
     }
-    return null;
-  };
+    return null
+  }
 
   dataCard = () => {
-    const { teamview, isSearch } = this.state;
+    const { teamview, isSearch } = this.state
     return (
       <Fragment>
         <View style={styles.ShiftContainer} zIndex={-200}>
@@ -389,19 +398,19 @@ class PublishedRoster extends Component {
           {/* </Card> */}
         </View>
       </Fragment>
-    );
-  };
+    )
+  }
 
   refreshPublishRoster = () => {
-    this.selectPublishRoster();
-  };
+    this.selectPublishRoster()
+  }
 
   closeModal = () => {
     this.setState({
       modalVisible: false,
-      pdfDoc: "",
-    });
-  };
+      pdfDoc: ""
+    })
+  }
 
   render() {
     const {
@@ -418,8 +427,8 @@ class PublishedRoster extends Component {
       pdfDoc,
       locations,
       locationPickerValue,
-      colors,
-    } = this.state;
+      colors
+    } = this.state
 
     return (
       <SafeAreaView style={styles.container}>
@@ -429,13 +438,13 @@ class PublishedRoster extends Component {
             transparent={true}
             visible={modalVisible}
             onRequestClose={() => {
-              this.closeModal();
+              this.closeModal()
             }}
           >
             <DocViewer
               uri={pdfDoc}
               onPress={() => {
-                this.closeModal();
+                this.closeModal()
               }}
             />
           </Modal>
@@ -464,7 +473,7 @@ class PublishedRoster extends Component {
           <View
             style={[
               styles.filterCard,
-              this.state.isDropdownOpen && { height: 400 },
+              this.state.isDropdownOpen && { height: 400 }
             ]}
             zIndex={2000}
           >
@@ -494,6 +503,7 @@ class PublishedRoster extends Component {
                   placeholder={"Select Roster Period"}
                   value={periodPickerValue}
                   zIndex={5000}
+                  defaultValue={periodPickerValue}
                 />
               </React.Fragment>
               <View>
@@ -528,7 +538,7 @@ class PublishedRoster extends Component {
           <View zIndex={-200}>{this.dataCard()}</View>
         </ScrollView>
       </SafeAreaView>
-    );
+    )
   }
 }
-export default withTheme(PublishedRoster);
+export default withTheme(PublishedRoster)

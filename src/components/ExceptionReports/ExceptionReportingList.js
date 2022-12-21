@@ -164,7 +164,6 @@ class ExceptionReportingList extends Component {
             refreshing,
             exceptionReport
         } = this.state
-
         return (
             <>
                 <SafeAreaView style={styles.container}>
@@ -194,7 +193,7 @@ class ExceptionReportingList extends Component {
                             showsVerticalScrollIndicator={false}
                             refreshControl={
                                 <RefreshControl
-                                    colors={LOADER_COLOR.COLOR}
+                                    colors={[LOADER_COLOR.COLOR]}
                                     refreshing={refreshing}
                                     onRefresh={async () => {
                                         this.setState({ refreshing: true })
