@@ -76,7 +76,7 @@ class PublishedRoster extends Component {
       this.setState({ loggedInUser: user })
       this.redirectUser(user)
       this.selectRosterPeriod(user)
-      this.selectPublishRoster()
+      
       this.selectLocationData(user)
     })
     this.selectShiftData()
@@ -105,7 +105,7 @@ class PublishedRoster extends Component {
       this.setState({
         periodPickerValue: selectedValue?.value,
         dates: selectedValue.label
-      })
+      },()=>this.selectPublishRoster())
     )
   }
 
