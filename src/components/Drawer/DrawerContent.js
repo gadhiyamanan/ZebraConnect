@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Image, Alert, SafeAreaView } from "react-native";
+import { View, StyleSheet, Image, Alert, SafeAreaView, Linking } from "react-native";
 import { DrawerItem, DrawerContentScrollView } from "@react-navigation/drawer";
 import {
   useTheme,
@@ -9,7 +9,7 @@ import {
   Text,
   Button,
 } from "react-native-paper";
-import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 import auth from "../../services/authService";
 import { SCREENS } from "../../util/constants/Constants";
@@ -18,25 +18,11 @@ import groupIcon from "../../assets/images/groupicon.png";
 import exceptionReportIcon from "../../assets/images/exceptionReportIcon.png";
 import { color } from "react-native-reanimated";
 import Constants from "expo-constants"
+import httpService from "../../services/httpService";
+import apiHelper from "../../screens/apiHelper";
 
 export default DrawerContent = props => {
   const paperTheme = useTheme();
-  const navigation = useNavigation();
-  const [userName, setUserName] = useState("");
-  const [fullName, setFullName] = useState("");
-
-  useEffect(() => {
-    auth
-      .getCurrentUser()
-      .then(user => {
-        let splitName = user.emp_name.split(" ");
-        setUserName(`${splitName[0].charAt(0)}${splitName[1].charAt(0)}`);
-        setFullName(user.emp_name);
-        // setEmpID(user.emp_id);
-      })
-      .catch();
-  }, []);
-
   let DASHBOARD_ITEMS = [
     {
       title: "Published Rosters",
@@ -134,14 +120,72 @@ export default DrawerContent = props => {
       ),
     },
   ];
+  const navigation = useNavigation();
+  const [userName, setUserName] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [dashBoardItems, setDashBoardItems] = useState(DASHBOARD_ITEMS);
+  
 
-  const getDashboardItems = (screenName, title, icon) => {
+  useEffect(() => {
+    auth
+      .getCurrentUser()
+      .then(user => {
+        let splitName = user.emp_name.split(" ");
+        setUserName(`${splitName[0].charAt(0)}${splitName[1].charAt(0)}`);
+        setFullName(user.emp_name);
+        // setEmpID(user.emp_id);
+      })
+      .catch();
+      getHelpLinks()
+  }, []);
+
+  const getHelpLinks = () => {
+    httpService
+    .get(
+        apiHelper.getHelpLinks 
+        
+    )
+    .then((result) => {
+      const data=result?.data[0]
+      setDashBoardItems([...dashBoardItems,
+        {
+        title: data?.trust_support_link_caption,
+        link : data?.trust_support_link,
+        Icon: (
+          <FontAwesome
+            name="support"
+            size={30}
+            color={paperTheme.colors.accent}
+            title={data?.trust_support_link_caption}
+          />
+        ),
+      },
+      {
+        title: data?.help_video_link_caption,
+        link : data?.help_video_link,
+        Icon: (
+          <Ionicons
+            name="help-sharp"
+            size={30}
+            color={paperTheme.colors.accent}
+            title={data?.help_video_link_caption}
+          />
+        ),
+      }])
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+  };
+
+  const getDashboardItems = (screenName, title, icon,link) => {
     return (
       <DrawerItem
         key={title}
         icon={({ drawercolor, size }) => icon}
         label={title}
         onPress={() => {
+          if(link) return Linking.openURL(link)
           navigation.navigate(screenName);
         }}
         labelStyle={{ color: paperTheme.colors.primary }}
@@ -211,8 +255,8 @@ export default DrawerContent = props => {
             </Title>
           </View>
           <Drawer.Section style={styles.drawerSection}>
-            {DASHBOARD_ITEMS.map(item => {
-              return getDashboardItems(item.screenName, item.title, item.Icon);
+            {dashBoardItems.map(item => {
+              return getDashboardItems(item.screenName, item.title, item.Icon,item.link);
             })}
           </Drawer.Section>
           <Drawer.Section style={styles.drawerSection}>

@@ -41,7 +41,8 @@ const apiHelper =
   getExceptionShiftDate: `/ExceptionReport/getExceptionShiftDate`,
   getExceptionLocationWorkarea: `/ExceptionReport/getExceptionLocationWorkarea`,
   addNewException: `/ExceptionReport/addNewException`,
-  getEmpLeaveHoursPerDay : `Leave/getEmpLeaveHoursPerDay`
+  getEmpLeaveHoursPerDay : `Leave/getEmpLeaveHoursPerDay`,
+  getHelpLinks : `/Support/getHelpLinks`
 };
 
 export default apiHelper;
