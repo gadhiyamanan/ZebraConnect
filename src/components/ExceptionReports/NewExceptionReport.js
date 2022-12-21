@@ -143,6 +143,7 @@ class NewExceptionReport extends Component {
         if (!exceptionType) return this.showFlashMessage(`Please select exception type`)
         if (!planner) return this.showFlashMessage(`Please select `)
         if (!date) return this.showFlashMessage(`Please select date`)
+        if (exceptionType=="Worked Extra Hours" && !extraWorkHour) return this.showFlashMessage(`Please Enter hours`)
         if (!workArea) return this.showFlashMessage(`Please select work area`)
         if (!supervisor) return this.showFlashMessage(`Please select supervisor`)
         if (!remarks) return this.showFlashMessage(`Please Enter remarks`)
