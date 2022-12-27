@@ -45,12 +45,13 @@ export default function LeaveRequestItem({ leaverequest }) {
       <View style={styles.leaveFromContainer}>
         <View style={styles.leaveFromSubContainer}>
           <Text style={styles.from}>
-            {leaverequest.from_date} to {leaverequest.to_date} (
+            {leaverequest.from_date} to {leaverequest.to_date} ({leaverequest?.leave_duration})
+            {/* (
             {moment(moment(leaverequest.to_date).format("YYYY-MM-DD")).diff(
               moment(leaverequest.from_date).format("YYYY-MM-DD"),
               "days"
             ) + 1}{" "}
-            day(s))
+            day(s)) */}
           </Text>
         </View>
         {/* <View style={styles.toLeaveSubContainer}>
