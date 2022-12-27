@@ -70,6 +70,22 @@ let style = StyleSheet.create({
   },
   disabled: {
     backgroundColor: '#eee'
+  },
+  timePickerContainer: {
+    margin: 0,
+    width: "85%",
+    justifyContent: "center",
+    alignSelf: "center" 
+  },
+  timePickerSubContainer: {
+    padding:10,
+    backgroundColor:"white",
+    borderRadius:2
+  },
+  btnContainer: {
+    flexDirection:"row",
+    justifyContent:"space-evenly",
+    marginVertical:20
   }
 });
 
