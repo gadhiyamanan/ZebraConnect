@@ -32,8 +32,8 @@ const ShortLeaveModal = ({
   const saveShortLeave = async () => {
     try {
       const formData = new URLSearchParams();
-      let stime = moment(fromFullDate).format(DATE_FORMATS.TIME_ONLY_FORMAT);
-      let etime = moment(toFullDate).format(DATE_FORMATS.TIME_ONLY_FORMAT);
+      let stime = moment(fromFullDate).set({second:0}).format(DATE_FORMATS.TIME_ONLY_FORMAT);
+      let etime = moment(toFullDate).set({second:0}).format(DATE_FORMATS.TIME_ONLY_FORMAT);
       formData.append("stime", stime);
       formData.append("etime", etime);
       formData.append("message", remark);
